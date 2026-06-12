@@ -123,6 +123,20 @@
                 <label><input type="checkbox" id="hybrid-champ" checked onchange="updateTCGRules()"> Human Spirit = Champion</label>
                 <label><input type="checkbox" id="hybrid-ult" checked onchange="updateTCGRules()"> Beast Spirit = Ultimate (Lv.5)</label>
             </div>
+
+            <div class="control-section">
+                <h3>2. Route Finder (BFS & Smart)</h3>
+                <select id="start-mon"><option value="">Select Start...</option></select>
+                <select id="end-mon"><option value="">Select Target...</option></select>
+                <label><input type="checkbox" id="allow-dedigivolve"> Allow De-digivolution</label>
+
+                <div style="display: flex; gap: 5px;">
+                    <button onclick="findRoute(false)">Canonical BFS</button>
+                    <button onclick="findRoute(true)" style="background: #a142f5;">KarnEX Engine</button>
+                </div>
+
+                <div id="route-readout" style="margin-top: 10px; font-size: 13px; color: #ffcc00; max-height: 120px; overflow-y: auto;"></div>
+            </div>
         </div>
     </div>
 

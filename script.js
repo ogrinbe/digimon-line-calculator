@@ -211,7 +211,9 @@ function resetGraph() {
 }
 
 // 5. Breadth-First Search (Route Finder)
-function findRoute() {
+// 5. Advanced Pathfinding (Multi-BFS & KarnEX Engine)
+
+function findRoute(useKarnEX = false) {
     let start = document.getElementById('start-mon').value;
     let end = document.getElementById('end-mon').value;
     let allowDedigivolve = document.getElementById('allow-dedigivolve').checked;
@@ -219,52 +221,217 @@ function findRoute() {
     if (!start || !end) return alert("Please select both a Start and Target Digimon.");
     if (start === end) return alert("Start and Target are the same Digimon.");
 
+    document.getElementById('route-readout').innerHTML = "Calculating...";
+
+    if (useKarnEX) {
+        runKarnEXSearch(start, end, allowDedigivolve);
+    } else {
+        runCanonicalBFS(start, end, allowDedigivolve);
+    }
+}
+
+function runCanonicalBFS(start, end, allowDedigivolve) {
     let queue = [{ current: start, pathNodes: [start], pathEdges: [] }];
-    let visited = new Set([start]);
-    let foundRoute = null;
+    // Track visited nodes by the depth we found them to allow converging parallel paths
+    let visitedLevels = new Map();
+    visitedLevels.set(start, 0);
+
+    let foundRoutes = [];
+    let shortestPathLength = Infinity;
 
     while (queue.length > 0) {
         let { current, pathNodes, pathEdges } = queue.shift();
 
+        // If this path is already longer than our confirmed shortest path, skip it
+        if (pathNodes.length > shortestPathLength) continue;
+
         if (current === end) {
-            foundRoute = { nodes: pathNodes, edges: pathEdges };
-            break;
+            foundRoutes.push({ nodes: pathNodes, edges: pathEdges });
+            shortestPathLength = pathNodes.length; // Lock in the shortest depth
+            continue; // Keep searching for other paths of this exact length
         }
 
-        let nextSteps = [...db[current].evolves_to];
-        if (allowDedigivolve) nextSteps = nextSteps.concat(db[current].evolves_from);
+        let currentMon = db[current];
+        let currentLevelNum = levelMap[currentMon.level] || 8;
+        let nextSteps = [];
 
-        for (let next of nextSteps) {
-            if (db[next] && !visited.has(next)) {
-                visited.add(next);
-                // Determine if we are moving forward or backward for the edge ID
-                let isForward = db[current].evolves_to.includes(next);
-                let edgeId = isForward ? (current + "->" + next) : (next + "->" + current);
+        // Forward Evolution Logic (Must be higher level unless de-digivolve is allowed)
+        currentMon.evolves_to.forEach(next => {
+            if (!db[next]) return;
+            let nextLevelNum = levelMap[db[next].level] || 8;
+            if (allowDedigivolve || nextLevelNum > currentLevelNum) {
+                nextSteps.push({ node: next, edgeId: `${current}->${next}` });
+            }
+        });
 
+        // Backward Evolution Logic (De-digivolving)
+        if (allowDedigivolve) {
+            currentMon.evolves_from.forEach(prev => {
+                if (!db[prev]) return;
+                nextSteps.push({ node: prev, edgeId: `${prev}->${current}` });
+            });
+        }
+
+        for (let step of nextSteps) {
+            let nextNode = step.node;
+            let nextDepth = pathNodes.length;
+
+            // Visit if unvisited OR if we are reaching it at the exact same depth (parallel path)
+            if (!visitedLevels.has(nextNode) || visitedLevels.get(nextNode) >= nextDepth) {
+                visitedLevels.set(nextNode, nextDepth);
                 queue.push({
-                    current: next,
-                    pathNodes: [...pathNodes, next],
-                    pathEdges: [...pathEdges, edgeId]
+                    current: nextNode,
+                    pathNodes: [...pathNodes, nextNode],
+                    pathEdges: [...pathEdges, step.edgeId]
                 });
             }
         }
     }
 
-    if (foundRoute) {
-        // Highlight the specific path through the graph
-        applyHighlight(start, foundRoute.edges);
+    displayRoutes(start, end, foundRoutes, "Canonical Path");
+}
+
+// KarnEX Heuristic Engine (Dijkstra's Algorithm)
+function calculateKarnEXCost(monA, monB) {
+    let cost = 100; // Base cost of any jump. Lower is better.
+
+    // 1. Strict Canonical Overlaps
+    if (monA.attribute && monA.attribute === monB.attribute) cost -= 20;
+    if (monA.type && monA.type === monB.type) cost -= 20;
+
+    // 2. Name prefix overlap (e.g., GeoGreymon -> MetalGreymon)
+    let baseNameA = monA.name.replace(/mon$/i, '');
+    let baseNameB = monB.name.replace(/mon$/i, '');
+    if (baseNameA.length > 3 && monB.name.includes(baseNameA)) cost -= 35;
+    if (baseNameB.length > 3 && monA.name.includes(baseNameB)) cost -= 35;
+
+    // 3. Family/Field overlap
+    let sharedFields = monA.fields.filter(f => monB.fields.includes(f));
+    cost -= (sharedFields.length * 10);
+
+    // 4. Visual & Lore Trait Overlap (The AI Component)
+    if (monA.traits && monB.traits) {
+        let sharedTraits = monA.traits.filter(t => monB.traits.includes(t));
+        let matchCount = sharedTraits.length;
+
+        // Exponential rewarding:
+        // 1 shared trait = -5 cost (Slight coincidence, minor bonus)
+        // 2 shared traits = -20 cost (Solid thematic connection)
+        // 3 shared traits = -45 cost (Very strong KarnEX visual line!)
+        // 4+ shared traits = -80 cost (Near guaranteed custom evolution)
+
+        if (matchCount === 1) cost -= 5;
+        else if (matchCount === 2) cost -= 20;
+        else if (matchCount >= 3) cost -= (matchCount * 15);
+    }
+
+    return Math.max(5, cost); // A perfectly logical path will bottom out at a cost of 5.
+}
+
+function runKarnEXSearch(start, end, allowDedigivolve) {
+    let pq = [{ current: start, pathNodes: [start], pathEdges: [], totalCost: 0 }];
+    let minCostToNode = new Map();
+    minCostToNode.set(start, 0);
+
+    let bestRoute = null;
+    let iterations = 0;
+
+    while (pq.length > 0 && iterations < 3000) {
+        // Priority Queue: Always process the lowest cost path next
+        pq.sort((a, b) => a.totalCost - b.totalCost);
+        let { current, pathNodes, pathEdges, totalCost } = pq.shift();
+        iterations++;
+
+        if (current === end) {
+            bestRoute = { nodes: pathNodes, edges: pathEdges, cost: totalCost };
+            break;
+        }
+
+        let currentMon = db[current];
+        let currentLevelNum = levelMap[currentMon.level] || 8;
+
+        // KarnEX evaluates ALL Digimon that are exactly 1 Level Higher (or lower if toggled)
+        let possibleTargets = dbArray.filter(mon => {
+            let targetLevel = levelMap[mon.level] || 8;
+            if (allowDedigivolve) {
+                return targetLevel === currentLevelNum + 1 || targetLevel === currentLevelNum - 1;
+            }
+            return targetLevel === currentLevelNum + 1;
+        });
+
+        for (let targetMon of possibleTargets) {
+            let targetName = targetMon.name;
+            let stepCost = calculateKarnEXCost(currentMon, targetMon);
+            let newCost = totalCost + stepCost;
+
+            if (!minCostToNode.has(targetName) || newCost < minCostToNode.get(targetName)) {
+                minCostToNode.set(targetName, newCost);
+
+                // Virtual Edge ID for custom routing
+                let virtualEdgeId = `${current}-karnex->${targetName}`;
+
+                pq.push({
+                    current: targetName,
+                    pathNodes: [...pathNodes, targetName],
+                    pathEdges: [...pathEdges, virtualEdgeId],
+                    totalCost: newCost
+                });
+            }
+        }
+    }
+
+    if (bestRoute) {
+        injectVirtualEdges(bestRoute.edges);
+        displayRoutes(start, end, [bestRoute], "KarnEX Logic");
     } else {
-        alert("No evolutionary route exists between these Digimon.");
+        document.getElementById('route-readout').innerHTML = `<span style="color:red">KarnEX could not resolve a logical path.</span>`;
     }
 }
 
-function populateDropdowns(data) {
-    const startSelect = document.getElementById('start-mon');
-    const endSelect = document.getElementById('end-mon');
-    let sortedNames = data.map(m => m.name).sort();
+// Renders Text and Illuminates Graph
+function displayRoutes(start, end, routes, modeTitle) {
+    let readout = document.getElementById('route-readout');
+    if (routes.length === 0) {
+        readout.innerHTML = `<span style="color:red">No ${modeTitle} route found. Try enabling De-digivolution or using KarnEX.</span>`;
+        return;
+    }
 
-    sortedNames.forEach(name => {
-        startSelect.add(new Option(name, name));
-        endSelect.add(new Option(name, name));
+    let html = `<strong>${modeTitle}:</strong> Found ${routes.length} path(s).<br>`;
+
+    // Display up to 6 parallel text paths
+    let displayCount = Math.min(routes.length, 6);
+    for (let i = 0; i < displayCount; i++) {
+        html += `<div style="margin-top:5px; background:#222; padding:5px; border:1px solid #444;">
+                    ${routes[i].nodes.join(" ➔ ")}
+                 </div>`;
+    }
+    if (routes.length > 6) html += `<div style="margin-top:5px;">...and ${routes.length - 6} parallel lines highlighted on canvas.</div>`;
+
+    readout.innerHTML = html;
+
+    // Consolidate all unique edges to illuminate on the canvas
+    let allEdgesToHighlight = [...new Set(routes.flatMap(r => r.edges))];
+    applyHighlight(start, allEdgesToHighlight);
+}
+
+// Injects custom dashed lines for the AI Engine
+function injectVirtualEdges(customEdges) {
+    let existingEdges = edgesDataset.getIds();
+    let newEdges = [];
+
+    customEdges.forEach(edgeId => {
+        if (!existingEdges.includes(edgeId)) {
+            let [from, to] = edgeId.split("-karnex->");
+            newEdges.push({
+                id: edgeId,
+                from: from,
+                to: to,
+                arrows: 'to',
+                color: { color: '#a142f5', opacity: 1 }, // Purple/Pink for Smart Routes
+                width: 3,
+                dashes: [10, 10] // Makes the line dashed to indicate it's not canonical
+            });
+        }
     });
+    if (newEdges.length > 0) edgesDataset.add(newEdges);
 }

@@ -5,6 +5,84 @@ import time
 import hashlib
 import os
 
+def extract_traits(wikitext):
+    """Scans the English lore and attack descriptions to assign AI tags."""
+    traits = set()
+    
+    # Trait Dictionary: Key is the Tag, Values are the trigger words
+    trait_map = {
+        # --- Elements & Magic ---
+        "Fire": ["fire", "flame", "burn", "magma", "blaze", "volcano", "heat", "inferno"],
+        "Water/Ice": ["water", "ice", "snow", "freeze", "ocean", "sea", "aqua", "blizzard", "frost", "cold"],
+        "Plant/Nature": ["plant", "tree", "flower", "leaf", "nature", "wood", "forest", "vine", "grass", "seed"],
+        "Electric": ["electric", "thunder", "lightning", "spark", "volt", "plasma", "shock"],
+        "Holy/Light": ["holy", "angel", "light", "sacred", "divine", "heaven", "celestial", "purify", "priest"],
+        "Dark/Demonic": ["dark", "evil", "demon", "devil", "shadow", "nightmare", "hell", "virus", "wicked", "abyss"],
+        "Earth/Sand": ["earth", "rock", "stone", "sand", "desert", "golem", "mud", "crystal"],
+        "Wind/Air": ["wind", "air", "storm", "tornado", "gale", "hurricane", "gust"],
+
+        # --- Species / Themes ---
+        "Dragon/Reptile": ["dragon", "dinosaur", "reptile", "dramon", "serpent", "wyvern", "saur"],
+        "Beast/Animal": ["beast", "animal", "wolf", "dog", "cat", "lion", "bird", "avian", "fox", "bear", "tiger", "mammal"],
+        "Machine/Metal": ["machine", "cyborg", "metal", "robot", "mechanical", "steel", "gear", "android", "chrome digizoid"],
+        "Aquatic": ["aquatic", "fish", "shark", "whale", "swimming", "submarine", "diver", "jellyfish"],
+        "Bug/Insect": ["bug", "insect", "spider", "beetle", "butterfly", "mantis", "bee", "wasp"],
+        "Mutant/Slime": ["mutant", "slime", "poop", "garbage", "trash", "filth", "sewage"],
+        
+        # --- Body Types & Wearables ---
+        "Flying": ["fly", "flying", "wings", "sky", "airborne", "wing"],
+        "Bipedal": ["two legs", "bipedal", "walks on two legs", "stand on two legs"],
+        "Quadruped": ["four legs", "quadruped", "walks on four legs", "beast form"],
+        "Humanoid": ["humanoid", "human-like", "bipedal human", "man-machine", "warrior figure", "fairy"],
+        "Armored": ["armor", "helmet", "shield", "clad in", "armour", "carapace"],
+
+        # --- Combat Style / Weapons ---
+        "Melee/Bladed": ["sword", "blade", "katana", "knife", "slash", "cut", "samurai", "ninja", "spear", "lance"],
+        "Ranged/Firearms": ["gun", "cannon", "sniper", "missile", "shoot", "blaster", "revolver", "artillery", "gatling"],
+        "Brawler": ["punch", "kick", "boxing", "wrestling", "martial arts", "fist", "grapple", "combat"],
+
+        # --- Colors ---
+        # Note: Colors are broad, so we use slightly more specific trigger words where possible
+        "Color: Black/Dark": ["black", "dark colored", "obsidian", "ebony"],
+        "Color: Red/Crimson": ["red", "crimson", "scarlet", "ruby", "red-colored"],
+        "Color: Blue/Azure": ["blue", "azure", "cerulean", "sapphire", "cyan"],
+        "Color: Yellow/Gold": ["yellow", "gold", "golden", "blonde"],
+        "Color: White/Silver": ["white", "silver", "pale", "snow white", "platinum"],
+        "Color: Green": ["green", "emerald", "jade", "viridian"],
+        "Color: Pink/Purple": ["pink", "purple", "violet", "magenta"],
+
+        "Human Spirit": ["Human Spirit"],
+        "Beast Spirit": ["Beast Spirit"],
+        "Fusion Spirit": ["Fusion Spirit"],
+        "Transcendent Spirit": ["Transcendent Spirit"]
+    }
+    
+    # Isolate only the English Profiles (|pe=) and Attack Descriptions (|desc=)
+    # This prevents triggering false positives from card game trivia
+    profile_texts = re.findall(r'\|pe[0-9a-z]*=([^\n]+)', wikitext, re.IGNORECASE)
+    attack_texts = re.findall(r'\|desc[0-9a-z]*=([^\n]+)', wikitext, re.IGNORECASE)
+    
+    combined_text = " ".join(profile_texts + attack_texts).lower()
+    
+    for trait, keywords in trait_map.items():
+        for keyword in keywords:
+            # Use regex \b to match exact words only (so "cat" doesn't match "catch")
+            if re.search(r'\b' + re.escape(keyword) + r'\b', combined_text):
+                traits.add(trait)
+                break # Move to the next category once we confirm a match
+                
+    return sorted(list(traits))
+
+def load_blacklist():
+    if os.path.exists("blacklist.json"):
+        with open("blacklist.json", "r", encoding="utf-8") as f:
+            return set(json.load(f))
+    return set()
+
+def save_blacklist(blacklist_set):
+    with open("blacklist.json", "w", encoding="utf-8") as f:
+        json.dump(sorted(list(blacklist_set)), f, indent=4)
+
 def get_english_mapping():
     url = "https://wikimon.net/api.php"
     params = {"action": "query", "prop": "revisions", "rvprop": "content", "titles": "List of English Dub Names", "format": "json"}
@@ -98,6 +176,7 @@ def parse_wikitext(name, english_name, wikitext):
         "type": None,
         "group": None,
         "fields": [],
+        "traits": [], # Will be populated by extract_traits
         "evolves_from": [],
         "evolves_to": []
     }
@@ -135,7 +214,17 @@ def parse_wikitext(name, english_name, wikitext):
     evolves_to_section = re.search(r'==\s*Evolves To\s*==(.*?)(?=\n==[A-Z]|$)', wikitext, re.DOTALL)
     if evolves_to_section:
         digimon_entry["evolves_to"] = extract_digimon_links(evolves_to_section.group(1))
-        
+    
+    digimon_entry["traits"] = extract_traits(wikitext)
+    
+    # --- NEW: HYBRID SPIRIT CLASS SCANNER ---
+    # This checks for Hybrid Spirit mentions and adds them as traits
+    spirit_match = re.search(r'(Human|Beast|Fusion|Transcendent)\s+Spirit', wikitext, re.IGNORECASE)
+    if spirit_match:
+        spirit_trait = f"{spirit_match.group(1).title()} Spirit"
+        if spirit_trait not in digimon_entry["traits"]:
+            digimon_entry["traits"].append(spirit_trait)
+
     return digimon_entry
 
 def extract_digimon_links(section_text):
@@ -153,6 +242,8 @@ def main():
     db_filename = "digimon_db.json"
     database = []
     existing_names = set()
+
+    blacklist = load_blacklist() # Load the skipped Digimon
     
     # DELTA CACHING: Load existing DB if it exists
     if os.path.exists(db_filename):
@@ -164,8 +255,8 @@ def main():
     english_mapping = get_english_mapping()
     master_list = get_all_digimon_names()
     
-    # Filter out Digimon we already have
-    missing_digimon = [mon for mon in master_list if mon not in existing_names]
+    # Filter out Digimon we already have and those in the blacklist
+    missing_digimon = [mon for mon in master_list if mon not in existing_names and mon not in blacklist]
     print(f"Found {len(missing_digimon)} NEW Digimon to fetch.")
     
     if not missing_digimon:
@@ -181,12 +272,17 @@ def main():
         results = fetch_wikimon_batch(batch, english_mapping)
         database.extend(results)
         
+        for canonical_name in batch:
+            # If the parser returned None, it's junk data. Blacklist it!   
+            if not any(d["name"] == canonical_name for d in results):
+                blacklist.add(canonical_name)
+
         # Save incrementally just in case it crashes
         with open(db_filename, "w", encoding="utf-8") as f:
             json.dump(database, f, indent=4, ensure_ascii=False)
+        save_blacklist(blacklist)    
             
         time.sleep(1) # Be polite to the server between big batches
-        
     print("\nSuccess! Database fully updated.")
 
 if __name__ == "__main__":
