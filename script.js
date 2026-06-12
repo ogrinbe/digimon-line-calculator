@@ -1,145 +1,141 @@
-// Feature 3: Level Normalization
-// This maps text levels to numbers so we can prevent infinite loops.
-// You can easily tie these to checkboxes later to dynamically change the numbers!
 const levelMap = {
-    "Baby I": 1,
-    "Baby II": 2,
-    "Child": 3,
-    "Adult": 4,
-    "Perfect": 5,
-    "Ultimate": 6,
-    "Super Ultimate": 7,
-    "Armor": 4,  // Treated as Adult/Champion
-    "Hybrid": 4, // Base Spirit treated as Adult
-    "No Level": 0 // Fallback
+    "Baby I": 1, "Baby II": 2, "Child": 3, "Adult": 4,
+    "Perfect": 5, "Ultimate": 6, "Super Ultimate": 7,
+    "Armor": 4, "Hybrid": 4, "No Level": 0
 };
 
-let db = {}; // Will hold our Digimon data as { "Agumon": {data} }
+let db = {};
+let network = null; // Store the graph instance
 
 // 1. Fetch the JSON file
 fetch('digimon_db.json')
     .then(response => response.json())
     .then(data => {
-        // Convert array to a fast lookup dictionary
-        data.forEach(mon => {
-            db[mon.name] = mon;
-        });
+        data.forEach(mon => { db[mon.name] = mon; });
 
-        initApp(data);
-    })
-    .catch(error => console.error("Error loading JSON:", error));
+        // Calculate the math (this is lightning fast)
+        let totalLines = calculateTotalPossibleLines(data);
+        document.getElementById('total-stats').innerText =
+            `Total Digimon: ${data.length} | Total Possible Lines: ${totalLines.toLocaleString()}`;
 
-function initApp(digimonArray) {
-    let totalLines = calculateTotalPossibleLines(digimonArray);
+        // Draw an empty graph to start
+        initGraph([], []);
+    });
 
-    // Update the UI
-    document.querySelector('#stats-bar h2').innerText =
-        `Total Digimon: ${digimonArray.length} | Total Possible Canonical Lines: ${totalLines.toLocaleString()}`;
-
-    // Render the Giant Web
-    renderGiantWeb(digimonArray);
-}
-
-// 2. The Math: Counting Lines Without Infinite Loops
+// 2. The Math (Unchanged - it was already fast)
 function calculateTotalPossibleLines(digimonArray) {
-    let memo = {}; // Cache to store calculations and run lightning fast
-
+    let memo = {};
     function countPaths(digimonName) {
         if (!db[digimonName]) return 0;
-
-        // If we already calculated this Digimon, return the saved answer
         if (memo[digimonName] !== undefined) return memo[digimonName];
 
         let currentMon = db[digimonName];
         let currentLevelNum = levelMap[currentMon.level] || 0;
 
-        // Filter evolutions: ONLY allow evolving UP to a higher level tier to break cycles
         let validEvolutions = currentMon.evolves_to.filter(targetName => {
             let targetMon = db[targetName];
-            if (!targetMon) return false;
-            let targetLevelNum = levelMap[targetMon.level] || 0;
-            return targetLevelNum > currentLevelNum;
+            return targetMon && (levelMap[targetMon.level] || 0) > currentLevelNum;
         });
 
-        // If it can't evolve any further, it is the end of 1 specific line
-        if (validEvolutions.length === 0) {
-            return 1;
-        }
+        if (validEvolutions.length === 0) return 1;
 
         let total = 0;
-        for (let nextMon of validEvolutions) {
-            total += countPaths(nextMon);
-        }
+        for (let nextMon of validEvolutions) total += countPaths(nextMon);
 
-        memo[digimonName] = total; // Save for later
+        memo[digimonName] = total;
         return total;
     }
 
     let totalGlobalLines = 0;
-
-    // We start counting from the absolute bottom (Baby I, or Digimon with no prior forms)
     digimonArray.forEach(mon => {
         let levelNum = levelMap[mon.level] || 0;
         if (levelNum === 1 || mon.evolves_from.length === 0) {
             totalGlobalLines += countPaths(mon.name);
         }
     });
-
     return totalGlobalLines;
 }
 
-// 3. Rendering the Web using Vis-Network
-function renderGiantWeb(digimonArray) {
-    const nodes = [];
-    const edges = [];
-    const addedEdges = new Set(); // Prevent drawing duplicate lines
+// 3. Search and Focus Logic
+function searchDigimon() {
+    let query = document.getElementById('searchBox').value.trim();
 
-    digimonArray.forEach(mon => {
-        // Create the Node with the Image
-        nodes.push({
-            id: mon.name,
-            label: mon.english_name || mon.name, // Use English name if available
-            shape: 'circularImage',
-            image: mon.image_url || 'https://via.placeholder.com/50', // Fallback if no image
-            size: 30,
-            font: { color: '#ffffff' }
-        });
+    // Capitalize first letter to match database (e.g. "agumon" -> "Agumon")
+    if (query.length > 0) {
+        query = query.charAt(0).toUpperCase() + query.slice(1);
+    }
 
-        // Create the Evolution Edges
-        let currentLevelNum = levelMap[mon.level] || 0;
+    if (!db[query]) {
+        alert("Digimon not found! Make sure you spelled it right.");
+        return;
+    }
 
-        mon.evolves_to.forEach(targetName => {
-            if (db[targetName]) {
-                let targetLevelNum = levelMap[db[targetName].level] || 0;
+    let nodesToDraw = new Map();
+    let edgesToDraw = [];
 
-                // Only draw arrows going UP in level to keep the web readable
-                if (targetLevelNum > currentLevelNum) {
-                    let edgeId = `${mon.name}->${targetName}`;
-                    if (!addedEdges.has(edgeId)) {
-                        edges.push({
-                            from: mon.name,
-                            to: targetName,
-                            arrows: 'to',
-                            color: { color: '#666', opacity: 0.5 }
-                        });
-                        addedEdges.add(edgeId);
-                    }
-                }
-            }
-        });
+    // Helper function to create a node safely
+    function addNode(monName) {
+        if (!nodesToDraw.has(monName) && db[monName]) {
+            let mon = db[monName];
+            nodesToDraw.set(monName, {
+                id: mon.name,
+                label: mon.english_name || mon.name,
+                shape: 'circularImage',
+                image: mon.image_url || 'https://via.placeholder.com/50',
+                size: 30,
+                font: { color: '#ffffff' },
+                level: levelMap[mon.level] || 0 // Used for sorting the tree
+            });
+        }
+    }
+
+    // Add the searched Digimon
+    addNode(query);
+
+    // Add what it evolves FROM
+    db[query].evolves_from.forEach(prevMon => {
+        if (db[prevMon]) {
+            addNode(prevMon);
+            edgesToDraw.push({ from: prevMon, to: query, arrows: 'to', color: '#ffcc00' });
+        }
     });
 
-    const container = document.getElementById('mynetwork');
-    const graphData = { nodes: nodes, edges: edges };
+    // Add what it evolves TO
+    db[query].evolves_to.forEach(nextMon => {
+        if (db[nextMon]) {
+            addNode(nextMon);
+            edgesToDraw.push({ from: query, to: nextMon, arrows: 'to', color: '#ffcc00' });
+        }
+    });
 
-    // Vis.js Physics Options
+    // Update the graph
+    initGraph(Array.from(nodesToDraw.values()), edgesToDraw);
+}
+
+// 4. The FAST Graph Renderer
+function initGraph(nodesArray, edgesArray) {
+    const container = document.getElementById('mynetwork');
+    const graphData = { nodes: nodesArray, edges: edgesArray };
+
     const options = {
-        physics: {
-            stabilization: false, // Turn off stabilization to load the massive graph faster
-            barnesHut: { gravitationalConstant: -80000, springConstant: 0.001, springLength: 200 }
+        // TURN OFF PHYSICS: This stops the CPU from melting
+        physics: { enabled: false },
+
+        // HIERARCHICAL LAYOUT: Forces it into a neat Left-to-Right tree
+        layout: {
+            hierarchical: {
+                direction: "LR", // Left to Right
+                sortMethod: "directed",
+                nodeSpacing: 150,
+                levelSeparation: 250
+            }
         },
-        nodes: { borderWidth: 2, color: { border: '#ffcc00', background: '#ffffff' } }
+        nodes: { borderWidth: 2, color: { border: '#444', background: '#ffffff' } },
+        edges: { smooth: { type: 'cubicBezier', forceDirection: 'horizontal' } }
     };
 
-    new vis.Network(container, graphData, options);
+    if (network !== null) {
+        network.destroy(); // Clear old graph
+    }
+    network = new vis.Network(container, graphData, options);
 }

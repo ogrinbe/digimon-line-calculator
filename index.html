@@ -36,9 +36,12 @@
     </style>
 </head>
 <body>
-
     <div id="stats-bar">
-        <h2>Loading Database...</h2>
+        <h2 id="total-stats">Loading Database...</h2>
+        <div style="margin-top: 10px;">
+            <input type="text" id="searchBox" placeholder="Enter a Digimon (e.g. Agumon)" style="padding: 5px; width: 200px;">
+            <button onclick="searchDigimon()" style="padding: 5px 15px; cursor: pointer;">Search Line</button>
+        </div>
     </div>
 
     <div id="mynetwork"></div>
