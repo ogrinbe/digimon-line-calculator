@@ -1,53 +1,38 @@
-// Map levels to numeric values for hierarchical columns AND math sorting
+// 1. Level Map Updated: "No Level" is now 8, placing it after Super Ultimate (7)
 const levelMap = {
     "Baby I": 1, "Baby II": 2, "Child": 3, "Adult": 4,
     "Perfect": 5, "Ultimate": 6, "Super Ultimate": 7,
-    "Armor": 4, // TCG default mapping
-    "Hybrid": 4,
-    "No Level": 0
+    "Armor": 4, "Hybrid": 4, "No Level": 8
 };
 
-// Map levels to specific border colors
 function getLevelColor(level) {
     const colors = {
-        "Baby I": "#ffffff",      // White
-        "Baby II": "#cccccc",     // Light Gray
-        "Child": "#4287f5",       // Blue (Rookie)
-        "Adult": "#42f566",       // Green (Champion)
-        "Perfect": "#a142f5",     // Purple (Ultimate)
-        "Ultimate": "#f5d142",    // Gold (Mega)
-        "Super Ultimate": "#ff0000", // Red (Ultra)
-        "Armor": "#ff8800",       // Orange
-        "Hybrid": "#00e5ff"       // Cyan
+        "Baby I": "#ffffff", "Baby II": "#cccccc", "Child": "#4287f5",
+        "Adult": "#42f566", "Perfect": "#a142f5", "Ultimate": "#f5d142",
+        "Super Ultimate": "#ff0000", "Armor": "#ff8800", "Hybrid": "#00e5ff"
     };
     return colors[level] || "#888888";
 }
 
 let db = {};
 let network = null;
+let nodesDataset = null; // New: Allows live updating of node colors
+let edgesDataset = null;
 
-// 1. Fetch the JSON file
 fetch('digimon_db.json')
     .then(response => response.json())
     .then(data => {
         data.forEach(mon => { db[mon.name] = mon; });
 
-        // Run the math!
         let totalLines = calculateTotalPossibleLines(data);
         document.getElementById('total-stats').innerText =
             `Database Loaded: ${data.length} Digimon | Total Canonical Lines: ${totalLines.toLocaleString()}`;
 
-        // Populate the dropdowns for the Route Finder UI
-        populateDropdowns(data);
-
-        // Draw the massive, structured web
         drawStructuredGraph(data);
     });
 
-// 2. The Math (Loop-Safe)
 function calculateTotalPossibleLines(digimonArray) {
     let memo = {};
-
     function countPaths(digimonName) {
         if (!db[digimonName]) return 0;
         if (memo[digimonName] !== undefined) return memo[digimonName];
@@ -55,7 +40,6 @@ function calculateTotalPossibleLines(digimonArray) {
         let currentMon = db[digimonName];
         let currentLevelNum = levelMap[currentMon.level] || 0;
 
-        // INFINITE LOOP PREVENTION: Only count evolutions that go UP in level
         let validEvolutions = currentMon.evolves_to.filter(targetName => {
             let targetMon = db[targetName];
             return targetMon && (levelMap[targetMon.level] || 0) > currentLevelNum;
@@ -73,7 +57,6 @@ function calculateTotalPossibleLines(digimonArray) {
     let totalGlobalLines = 0;
     digimonArray.forEach(mon => {
         let levelNum = levelMap[mon.level] || 0;
-        // Start counting only from the absolute bottom of the tree
         if (levelNum === 1 || mon.evolves_from.length === 0) {
             totalGlobalLines += countPaths(mon.name);
         }
@@ -81,77 +64,92 @@ function calculateTotalPossibleLines(digimonArray) {
     return totalGlobalLines;
 }
 
-// 3. Render the Massive Grid (No Physics, Strict Hierarchy)
 function drawStructuredGraph(data) {
-    let nodesArray = [];
-    let edgesArray = [];
+    let rawNodes = [];
+    let rawEdges = [];
 
     data.forEach(mon => {
-        // Build Node with Level Property and Colors
-        nodesArray.push({
+        rawNodes.push({
             id: mon.name,
             label: mon.english_name || mon.name,
             shape: 'circularImage',
             image: mon.image_url || 'https://via.placeholder.com/50',
-            size: 20,
-            level: levelMap[mon.level] || 0, // CRITICAL: This dictates the column it sits in
+            size: 40, // Increased image size!
+            level: levelMap[mon.level] || 8, // Sorts No Level to the end
             borderWidth: 4,
-            color: {
-                border: getLevelColor(mon.level),
-                background: '#222'
-            },
-            font: { color: '#ffffff', size: 10 }
+            color: { border: getLevelColor(mon.level), background: '#222', opacity: 1 },
+            font: { color: '#ffffff', size: 14 } // Bigger font
         });
 
-        // Build Edges
         mon.evolves_to.forEach(nextMon => {
             if (db[nextMon]) {
-                edgesArray.push({
+                rawEdges.push({
                     from: mon.name,
                     to: nextMon,
                     arrows: 'to',
-                    color: { color: '#444444', opacity: 0.5 }
+                    color: { color: '#555', opacity: 0.6 }
                 });
             }
         });
     });
 
+    // Load into Vis DataSets for dynamic clicking
+    nodesDataset = new vis.DataSet(rawNodes);
+    edgesDataset = new vis.DataSet(rawEdges);
+
     const container = document.getElementById('mynetwork');
-    const graphData = { nodes: nodesArray, edges: edgesArray };
+    const graphData = { nodes: nodesDataset, edges: edgesDataset };
 
     const options = {
-        physics: false, // Turned off completely to prevent the "Black Hole" effect
+        physics: false,
         layout: {
             hierarchical: {
                 enabled: true,
-                direction: 'LR', // Left to Right
-                sortMethod: 'custom', // Uses the 'level' property we assigned to nodes
-                levelSeparation: 300, // Distance between columns (e.g., Rookie column to Champion column)
-                nodeSpacing: 40       // Distance between Digimon in the same column
+                direction: 'LR',
+                sortMethod: 'custom',
+                levelSeparation: 250,
+                nodeSpacing: 70 // Decreased spacing to bring Digimon closer together
             }
         },
-        edges: { smooth: { type: 'cubicBezier', forceDirection: 'horizontal' } }
+        interaction: {
+            hideEdgesOnDrag: true, // IMMENSE PERFORMANCE BOOST WHEN ZOOMING/PANNING
+            hover: true
+        },
+        edges: {
+            smooth: false, // Straight lines process 10x faster than curved lines
+            width: 1
+        }
     };
 
     if (network !== null) network.destroy();
     network = new vis.Network(container, graphData, options);
-}
 
-// Helper: Fill the UI Dropdowns
-function populateDropdowns(data) {
-    const startSelect = document.getElementById('start-mon');
-    const endSelect = document.getElementById('end-mon');
+    // QoL: Click Event for Highlighting
+    network.on("click", function (params) {
+        if (params.nodes.length > 0) {
+            let selectedNodeId = params.nodes[0];
+            let connectedNodes = network.getConnectedNodes(selectedNodeId);
+            let allFocusNodes = [...connectedNodes, selectedNodeId];
 
-    // Sort alphabetically for the dropdown
-    let sortedNames = data.map(m => m.name).sort();
-
-    sortedNames.forEach(name => {
-        let option1 = document.createElement('option');
-        option1.value = option1.innerText = name;
-        startSelect.appendChild(option1);
-
-        let option2 = document.createElement('option');
-        option2.value = option2.innerText = name;
-        endSelect.appendChild(option2);
+            let updateArray = nodesDataset.get().map(node => {
+                if (allFocusNodes.includes(node.id)) {
+                    node.color.opacity = 1;
+                    node.font = { color: '#ffffff', size: 16, bold: true };
+                } else {
+                    node.color.opacity = 0.1; // Fade out the rest of the web
+                    node.font = { color: '#333333', size: 14 };
+                }
+                return node;
+            });
+            nodesDataset.update(updateArray);
+        } else {
+            // Clicked empty space: Reset everything
+            let resetArray = nodesDataset.get().map(node => {
+                node.color.opacity = 1;
+                node.font = { color: '#ffffff', size: 14, bold: false };
+                return node;
+            });
+            nodesDataset.update(resetArray);
+        }
     });
 }

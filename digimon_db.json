@@ -5005,64 +5005,6 @@
         ]
     },
     {
-        "name": "Bao Hackmon",
-        "english_name": "Bao Hackmon",
-        "image_url": "https://wikimon.net/images/2/28/Baohuckmon.jpg",
-        "level": "Adult",
-        "attribute": "Data",
-        "type": "Dinosaur",
-        "group": null,
-        "fields": [
-            "Metal Empire",
-            "Virus Busters"
-        ],
-        "evolves_from": [
-            "Agumon (2006 Anime Version)",
-            "Gazimon",
-            "Gumdramon",
-            "Hackmon",
-            "Plotmon",
-            "Zubamon"
-        ],
-        "evolves_to": [
-            "Aero V-dramon",
-            "Andromon",
-            "Anomalocarimon",
-            "Arresterdramon: Superior Mode (Brave Snatcher)",
-            "Asuramon",
-            "Beowolfmon",
-            "Big Mamemon",
-            "Coronamon",
-            "Cyberdramon",
-            "Dagomon",
-            "Dark Knightmon",
-            "Dorbickmon",
-            "Duramon",
-            "Etemon",
-            "Fantomon",
-            "Garudamon",
-            "Garummon",
-            "Gerbemon",
-            "Groundramon",
-            "Hangyomon",
-            "JESmon",
-            "Jyagamon",
-            "Lady Devimon",
-            "Loader Leomon",
-            "Megadramon",
-            "Metal Mamemon",
-            "Piccolomon",
-            "Pumpmon",
-            "Rize Greymon",
-            "Savior Hackmon",
-            "Tonosama Gekomon",
-            "Vamdemon",
-            "Waru Monzaemon",
-            "Were Garurumon",
-            "Whamon Perfect"
-        ]
-    },
-    {
         "name": "Big Mamemon",
         "english_name": "BigMamemon",
         "image_url": "https://wikimon.net/images/6/66/Bigmamemon.jpg",
@@ -5157,6 +5099,64 @@
         ],
         "evolves_to": [
             "Bio Lotusmon"
+        ]
+    },
+    {
+        "name": "Bao Hackmon",
+        "english_name": "Bao Hackmon",
+        "image_url": "https://wikimon.net/images/2/28/Baohuckmon.jpg",
+        "level": "Adult",
+        "attribute": "Data",
+        "type": "Dinosaur",
+        "group": null,
+        "fields": [
+            "Metal Empire",
+            "Virus Busters"
+        ],
+        "evolves_from": [
+            "Agumon (2006 Anime Version)",
+            "Gazimon",
+            "Gumdramon",
+            "Hackmon",
+            "Plotmon",
+            "Zubamon"
+        ],
+        "evolves_to": [
+            "Aero V-dramon",
+            "Andromon",
+            "Anomalocarimon",
+            "Arresterdramon: Superior Mode (Brave Snatcher)",
+            "Asuramon",
+            "Beowolfmon",
+            "Big Mamemon",
+            "Coronamon",
+            "Cyberdramon",
+            "Dagomon",
+            "Dark Knightmon",
+            "Dorbickmon",
+            "Duramon",
+            "Etemon",
+            "Fantomon",
+            "Garudamon",
+            "Garummon",
+            "Gerbemon",
+            "Groundramon",
+            "Hangyomon",
+            "JESmon",
+            "Jyagamon",
+            "Lady Devimon",
+            "Loader Leomon",
+            "Megadramon",
+            "Metal Mamemon",
+            "Piccolomon",
+            "Pumpmon",
+            "Rize Greymon",
+            "Savior Hackmon",
+            "Tonosama Gekomon",
+            "Vamdemon",
+            "Waru Monzaemon",
+            "Were Garurumon",
+            "Whamon Perfect"
         ]
     },
     {
@@ -10767,109 +10767,6 @@
         ]
     },
     {
-        "name": "Death Airdramon",
-        "english_name": "DeathAirdramon",
-        "image_url": "https://wikimon.net/images/8/85/CmonDigimon_DeathAirdramon.jpg",
-        "level": "No Level",
-        "attribute": null,
-        "type": "Mythical Beast",
-        "group": null,
-        "fields": [],
-        "evolves_from": [
-            "Deathmon (C'mon Digimon Version)"
-        ],
-        "evolves_to": [
-            "Death Devimon"
-        ]
-    },
-    {
-        "name": "Death Meramon",
-        "english_name": "SkullMeramon",
-        "image_url": "https://wikimon.net/images/a/ae/Deathmeramon.jpg",
-        "level": "Perfect",
-        "attribute": "Data",
-        "type": "Flame",
-        "group": null,
-        "fields": [
-            "Nightmare Soldiers"
-        ],
-        "evolves_from": [
-            "Agnimon",
-            "Angemon",
-            "Bakemon",
-            "Birdramon",
-            "Black Growmon",
-            "Black Tailmon",
-            "Blue Meramon",
-            "Boogiemon",
-            "Clockmon",
-            "Devimon",
-            "Dokugumon",
-            "Fladramon",
-            "Flare Lizamon",
-            "Gorimon",
-            "Jyarimon",
-            "Kougamon",
-            "Lady Devimon",
-            "Lavorvomon",
-            "Leomon",
-            "Meicoomon",
-            "Meramon",
-            "Orgemon",
-            "Scumon",
-            "Tankmon",
-            "Tyranomon",
-            "Wendimon",
-            "Wizarmon",
-            "Yaksamon",
-            "Youkomon"
-        ],
-        "evolves_to": [
-            "Ancient Volcamon",
-            "Avenge Kidmon",
-            "Barbamon",
-            "Beelzebumon",
-            "Beelzebumon (X-Antibody)",
-            "Boltmon",
-            "Cannondramon",
-            "Demon",
-            "Devitamamon",
-            "Gankoomon",
-            "Griffomon",
-            "Jijimon",
-            "Marsmon",
-            "Megidramon",
-            "Metal Garurumon",
-            "Metal Seadramon",
-            "Noble Pumpmon",
-            "Piemon",
-            "Plesiomon",
-            "Saber Leomon",
-            "Shoutmon X7: Superior Mode",
-            "Skull Mammon",
-            "Venom Vamdemon",
-            "Volcanicdramon"
-        ]
-    },
-    {
-        "name": "Darkness Bagramon (Dark Knightmon)",
-        "english_name": "Darkness Bagramon (Dark Knightmon)",
-        "image_url": "https://wikimon.net/images/1/14/DarkKnightmon_(Bagramon).png",
-        "level": "No Level",
-        "attribute": "Virus",
-        "type": null,
-        "group": null,
-        "fields": [],
-        "evolves_from": [
-            "Bagramon",
-            "Dark Knightmon",
-            "Super Dark Knightmon"
-        ],
-        "evolves_to": [
-            "Darkness Bagramon"
-        ]
-    },
-    {
         "name": "Death-X-DORUgamon",
         "english_name": "DexDORUgamon",
         "image_url": "https://wikimon.net/images/3/3a/Deathxdorugamon.jpg",
@@ -10989,6 +10886,91 @@
         ]
     },
     {
+        "name": "Death Airdramon",
+        "english_name": "DeathAirdramon",
+        "image_url": "https://wikimon.net/images/8/85/CmonDigimon_DeathAirdramon.jpg",
+        "level": "No Level",
+        "attribute": null,
+        "type": "Mythical Beast",
+        "group": null,
+        "fields": [],
+        "evolves_from": [
+            "Deathmon (C'mon Digimon Version)"
+        ],
+        "evolves_to": [
+            "Death Devimon"
+        ]
+    },
+    {
+        "name": "Death Meramon",
+        "english_name": "SkullMeramon",
+        "image_url": "https://wikimon.net/images/a/ae/Deathmeramon.jpg",
+        "level": "Perfect",
+        "attribute": "Data",
+        "type": "Flame",
+        "group": null,
+        "fields": [
+            "Nightmare Soldiers"
+        ],
+        "evolves_from": [
+            "Agnimon",
+            "Angemon",
+            "Bakemon",
+            "Birdramon",
+            "Black Growmon",
+            "Black Tailmon",
+            "Blue Meramon",
+            "Boogiemon",
+            "Clockmon",
+            "Devimon",
+            "Dokugumon",
+            "Fladramon",
+            "Flare Lizamon",
+            "Gorimon",
+            "Jyarimon",
+            "Kougamon",
+            "Lady Devimon",
+            "Lavorvomon",
+            "Leomon",
+            "Meicoomon",
+            "Meramon",
+            "Orgemon",
+            "Scumon",
+            "Tankmon",
+            "Tyranomon",
+            "Wendimon",
+            "Wizarmon",
+            "Yaksamon",
+            "Youkomon"
+        ],
+        "evolves_to": [
+            "Ancient Volcamon",
+            "Avenge Kidmon",
+            "Barbamon",
+            "Beelzebumon",
+            "Beelzebumon (X-Antibody)",
+            "Boltmon",
+            "Cannondramon",
+            "Demon",
+            "Devitamamon",
+            "Gankoomon",
+            "Griffomon",
+            "Jijimon",
+            "Marsmon",
+            "Megidramon",
+            "Metal Garurumon",
+            "Metal Seadramon",
+            "Noble Pumpmon",
+            "Piemon",
+            "Plesiomon",
+            "Saber Leomon",
+            "Shoutmon X7: Superior Mode",
+            "Skull Mammon",
+            "Venom Vamdemon",
+            "Volcanicdramon"
+        ]
+    },
+    {
         "name": "Death Metal Greymon",
         "english_name": "DeathMetalGreymon",
         "image_url": "https://wikimon.net/images/f/fa/CmonDigimon_DeathMetalGreymon.jpg",
@@ -11003,6 +10985,24 @@
         ],
         "evolves_to": [
             "Death Meramon (C'mon Digimon Version)"
+        ]
+    },
+    {
+        "name": "Darkness Bagramon (Dark Knightmon)",
+        "english_name": "Darkness Bagramon (Dark Knightmon)",
+        "image_url": "https://wikimon.net/images/1/14/DarkKnightmon_(Bagramon).png",
+        "level": "No Level",
+        "attribute": "Virus",
+        "type": null,
+        "group": null,
+        "fields": [],
+        "evolves_from": [
+            "Bagramon",
+            "Dark Knightmon",
+            "Super Dark Knightmon"
+        ],
+        "evolves_to": [
+            "Darkness Bagramon"
         ]
     },
     {
@@ -14058,20 +14058,6 @@
         ]
     },
     {
-        "name": "Gallantmon Chaos Mode",
-        "english_name": "Gallantmon Chaos Mode",
-        "image_url": "https://wikimon.net/images/6/69/Dukemon_Chaos_Mode_toy.jpg",
-        "level": "Ultimate",
-        "attribute": "Virus",
-        "type": "Dark Knight",
-        "group": null,
-        "fields": [],
-        "evolves_from": [
-            "Chaos Dukemon"
-        ],
-        "evolves_to": []
-    },
-    {
         "name": "Erlangmon: Blast Mode",
         "english_name": "Erlangmon: Blast Mode",
         "image_url": "https://wikimon.net/images/9/9a/Erlangmon_blast.jpg",
@@ -14287,6 +14273,20 @@
         "evolves_from": [
             "Dalphomon",
             "Metatromon"
+        ],
+        "evolves_to": []
+    },
+    {
+        "name": "Gallantmon Chaos Mode",
+        "english_name": "Gallantmon Chaos Mode",
+        "image_url": "https://wikimon.net/images/6/69/Dukemon_Chaos_Mode_toy.jpg",
+        "level": "Ultimate",
+        "attribute": "Virus",
+        "type": "Dark Knight",
+        "group": null,
+        "fields": [],
+        "evolves_from": [
+            "Chaos Dukemon"
         ],
         "evolves_to": []
     },
@@ -21047,18 +21047,6 @@
         ]
     },
     {
-        "name": "Heshouwushou",
-        "english_name": "Heshouwushou",
-        "image_url": "https://wikimon.net/images/6/64/Heshouwumon_2.png",
-        "level": "Adult",
-        "attribute": null,
-        "type": "Man",
-        "group": null,
-        "fields": [],
-        "evolves_from": [],
-        "evolves_to": []
-    },
-    {
         "name": "Hexeblaumon",
         "english_name": "Hexeblaumon",
         "image_url": "https://wikimon.net/images/c/ce/Hexeblaumon.jpg",
@@ -23079,52 +23067,6 @@
         ]
     },
     {
-        "name": "Hackmon",
-        "english_name": "Hackmon",
-        "image_url": "https://wikimon.net/images/b/b9/Huckmon.jpg",
-        "level": "Child",
-        "attribute": "Data",
-        "type": "Small Dragon",
-        "group": null,
-        "fields": [
-            "Metal Empire",
-            "Virus Busters"
-        ],
-        "evolves_from": [
-            "Babydmon",
-            "Koromon",
-            "Mochimon",
-            "Nyaromon",
-            "Sakuttomon",
-            "Tokomon"
-        ],
-        "evolves_to": [
-            "Arresterdramon",
-            "Bao Hackmon",
-            "Bomber Nanimon",
-            "Coredramon (Blue)",
-            "Dorbickmon",
-            "Geo Greymon",
-            "Geremon",
-            "Gold V-dramon",
-            "Greymon",
-            "Growmon",
-            "Gururumon",
-            "JESmon",
-            "JESmon (X-Antibody)",
-            "Leomon",
-            "Monochromon",
-            "Numemon",
-            "Platinum Scumon",
-            "Red V-dramon",
-            "Scumon",
-            "Tailmon",
-            "Targetmon",
-            "XV-mon",
-            "Zubaeagermon"
-        ]
-    },
-    {
         "name": "Jijimon",
         "english_name": "Jijimon",
         "image_url": "https://wikimon.net/images/5/52/Jijimon.jpg",
@@ -23164,18 +23106,6 @@
             "Shoutmon X7: Superior Mode",
             "Xuanwumon"
         ]
-    },
-    {
-        "name": "Jinsihoushou",
-        "english_name": "Jinsihoushou",
-        "image_url": "https://wikimon.net/images/1/16/Jinsihoumon.png",
-        "level": "Child",
-        "attribute": null,
-        "type": "Beast Man",
-        "group": null,
-        "fields": [],
-        "evolves_from": [],
-        "evolves_to": []
     },
     {
         "name": "Jokermon",
@@ -23386,6 +23316,52 @@
             "Jupitermon"
         ],
         "evolves_to": []
+    },
+    {
+        "name": "Hackmon",
+        "english_name": "Hackmon",
+        "image_url": "https://wikimon.net/images/b/b9/Huckmon.jpg",
+        "level": "Child",
+        "attribute": "Data",
+        "type": "Small Dragon",
+        "group": null,
+        "fields": [
+            "Metal Empire",
+            "Virus Busters"
+        ],
+        "evolves_from": [
+            "Babydmon",
+            "Koromon",
+            "Mochimon",
+            "Nyaromon",
+            "Sakuttomon",
+            "Tokomon"
+        ],
+        "evolves_to": [
+            "Arresterdramon",
+            "Bao Hackmon",
+            "Bomber Nanimon",
+            "Coredramon (Blue)",
+            "Dorbickmon",
+            "Geo Greymon",
+            "Geremon",
+            "Gold V-dramon",
+            "Greymon",
+            "Growmon",
+            "Gururumon",
+            "JESmon",
+            "JESmon (X-Antibody)",
+            "Leomon",
+            "Monochromon",
+            "Numemon",
+            "Platinum Scumon",
+            "Red V-dramon",
+            "Scumon",
+            "Tailmon",
+            "Targetmon",
+            "XV-mon",
+            "Zubaeagermon"
+        ]
     },
     {
         "name": "Justimon: Accel Arm",
@@ -30498,6 +30474,48 @@
         ]
     },
     {
+        "name": "Metal Greymon (2010 Anime Version)",
+        "english_name": "MetalGreymon (2010 Anime Version)",
+        "image_url": "https://wikimon.net/images/6/6c/Metalgreymon_2010.jpg",
+        "level": "Perfect",
+        "attribute": "Virus",
+        "type": "Cyborg",
+        "group": null,
+        "fields": [
+            "Metal Empire"
+        ],
+        "evolves_from": [
+            "Ballistamon",
+            "DigiXros",
+            "Greymon (2010 Anime Version)",
+            "Greymon (Ash)",
+            "Greymon O",
+            "Machmon",
+            "Mail Birdramon",
+            "Raremon"
+        ],
+        "evolves_to": [
+            "Blitz Greymon",
+            "Chaosdramon",
+            "Decker Greymon",
+            "Gaioumon",
+            "Grand Locomon",
+            "Grey Knightsmon",
+            "Heavy Leomon",
+            "Metal Greymon (Virus) (X-Antibody)",
+            "Metal Greymon (X-Antibody)",
+            "Metal Greymon + Cyber Launcher",
+            "Metal Greymon: Alterous Mode",
+            "Mugendramon",
+            "Neo Vamdemon Darkness Mode (Metal Greymon)",
+            "Rampage Greymon",
+            "Shoutmon X3GM",
+            "Shoutmon X7: Superior Mode",
+            "War Greymon",
+            "Zeke Greymon"
+        ]
+    },
+    {
         "name": "Metal Greymon: \"G\" Erosion Mode",
         "english_name": "Metal Greymon: \"G\" Erosion Mode",
         "image_url": "https://wikimon.net/images/3/38/MetalGreymon_G_Erosion_Mode.jpg",
@@ -30550,48 +30568,6 @@
             "Mugendramon",
             "Omegamon Zwart",
             "Victory Greymon",
-            "War Greymon",
-            "Zeke Greymon"
-        ]
-    },
-    {
-        "name": "Metal Greymon (2010 Anime Version)",
-        "english_name": "MetalGreymon (2010 Anime Version)",
-        "image_url": "https://wikimon.net/images/6/6c/Metalgreymon_2010.jpg",
-        "level": "Perfect",
-        "attribute": "Virus",
-        "type": "Cyborg",
-        "group": null,
-        "fields": [
-            "Metal Empire"
-        ],
-        "evolves_from": [
-            "Ballistamon",
-            "DigiXros",
-            "Greymon (2010 Anime Version)",
-            "Greymon (Ash)",
-            "Greymon O",
-            "Machmon",
-            "Mail Birdramon",
-            "Raremon"
-        ],
-        "evolves_to": [
-            "Blitz Greymon",
-            "Chaosdramon",
-            "Decker Greymon",
-            "Gaioumon",
-            "Grand Locomon",
-            "Grey Knightsmon",
-            "Heavy Leomon",
-            "Metal Greymon (Virus) (X-Antibody)",
-            "Metal Greymon (X-Antibody)",
-            "Metal Greymon + Cyber Launcher",
-            "Metal Greymon: Alterous Mode",
-            "Mugendramon",
-            "Neo Vamdemon Darkness Mode (Metal Greymon)",
-            "Rampage Greymon",
-            "Shoutmon X3GM",
-            "Shoutmon X7: Superior Mode",
             "War Greymon",
             "Zeke Greymon"
         ]
@@ -39906,20 +39882,6 @@
         ]
     },
     {
-        "name": "Rook Chessmon (White)",
-        "english_name": "Rook Chessmon (White)",
-        "image_url": "https://wikimon.net/images/6/61/Digimon_noimage.jpg",
-        "level": "Perfect",
-        "attribute": "Virus",
-        "type": "Puppet",
-        "group": "Chessmon-species",
-        "fields": [],
-        "evolves_from": [],
-        "evolves_to": [
-            "King Chessmon"
-        ]
-    },
-    {
         "name": "Rosemon",
         "english_name": "Rosemon",
         "image_url": "https://wikimon.net/images/b/bb/Rosemon.jpg",
@@ -40564,30 +40526,6 @@
         ]
     },
     {
-        "name": "Sakuyamon: Miko Mode",
-        "english_name": "Sakuyamon: Miko Mode",
-        "image_url": "https://wikimon.net/images/c/c1/Sakuyamon_miko.jpg",
-        "level": "Ultimate",
-        "attribute": "Data",
-        "type": "God Man",
-        "group": null,
-        "fields": [
-            "Nightmare Soldiers"
-        ],
-        "evolves_from": [
-            "Kuzuhamon",
-            "Panjyamon",
-            "Sakuyamon",
-            "Taomon",
-            "Taomon (Silver)"
-        ],
-        "evolves_to": [
-            "Kuzuhamon",
-            "Sakuyamon",
-            "Sakuyamon (X-Antibody)"
-        ]
-    },
-    {
         "name": "Sakuyamon (X-Antibody)",
         "english_name": "Sakuyamon (X-Antibody)",
         "image_url": "https://wikimon.net/images/6/61/Sakuyamonx.jpg",
@@ -40613,6 +40551,30 @@
         ],
         "evolves_to": [
             "Dukemon (X-Antibody)"
+        ]
+    },
+    {
+        "name": "Sakuyamon: Miko Mode",
+        "english_name": "Sakuyamon: Miko Mode",
+        "image_url": "https://wikimon.net/images/c/c1/Sakuyamon_miko.jpg",
+        "level": "Ultimate",
+        "attribute": "Data",
+        "type": "God Man",
+        "group": null,
+        "fields": [
+            "Nightmare Soldiers"
+        ],
+        "evolves_from": [
+            "Kuzuhamon",
+            "Panjyamon",
+            "Sakuyamon",
+            "Taomon",
+            "Taomon (Silver)"
+        ],
+        "evolves_to": [
+            "Kuzuhamon",
+            "Sakuyamon",
+            "Sakuyamon (X-Antibody)"
         ]
     },
     {
@@ -41408,47 +41370,6 @@
             "Megalo Growmon",
             "Paildramon",
             "Sethmon Wild Mode"
-        ]
-    },
-    {
-        "name": "Savior Hackmon",
-        "english_name": "Savior Hackmon",
-        "image_url": "https://wikimon.net/images/c/c1/Saviorhuckmon.jpg",
-        "level": "Perfect",
-        "attribute": "Data",
-        "type": "Dragon Man",
-        "group": null,
-        "fields": [
-            "Metal Empire",
-            "Virus Busters"
-        ],
-        "evolves_from": [
-            "Angemon",
-            "Arresterdramon",
-            "Bao Huckmon",
-            "Coredramon (Green)",
-            "Firamon",
-            "Gaogamon",
-            "Strikedramon",
-            "Targetmon",
-            "Zubaeagermon"
-        ],
-        "evolves_to": [
-            "Boltmon",
-            "Breakdramon",
-            "Dorbickmon",
-            "Gankoomon",
-            "Griffomon",
-            "JESmon",
-            "JESmon (X-Antibody)",
-            "Magna Kidmon",
-            "Metal Garurumon",
-            "Metal Seadramon",
-            "Plesiomon",
-            "Saber Leomon",
-            "Slayerdramon",
-            "Tiger Vespamon",
-            "Valkyrimon"
         ]
     },
     {
@@ -42259,6 +42180,47 @@
         ]
     },
     {
+        "name": "Savior Hackmon",
+        "english_name": "Savior Hackmon",
+        "image_url": "https://wikimon.net/images/c/c1/Saviorhuckmon.jpg",
+        "level": "Perfect",
+        "attribute": "Data",
+        "type": "Dragon Man",
+        "group": null,
+        "fields": [
+            "Metal Empire",
+            "Virus Busters"
+        ],
+        "evolves_from": [
+            "Angemon",
+            "Arresterdramon",
+            "Bao Huckmon",
+            "Coredramon (Green)",
+            "Firamon",
+            "Gaogamon",
+            "Strikedramon",
+            "Targetmon",
+            "Zubaeagermon"
+        ],
+        "evolves_to": [
+            "Boltmon",
+            "Breakdramon",
+            "Dorbickmon",
+            "Gankoomon",
+            "Griffomon",
+            "JESmon",
+            "JESmon (X-Antibody)",
+            "Magna Kidmon",
+            "Metal Garurumon",
+            "Metal Seadramon",
+            "Plesiomon",
+            "Saber Leomon",
+            "Slayerdramon",
+            "Tiger Vespamon",
+            "Valkyrimon"
+        ]
+    },
+    {
         "name": "Shortmon",
         "english_name": "Shortmon",
         "image_url": "https://wikimon.net/images/7/7f/Shortmon.jpg",
@@ -42271,18 +42233,6 @@
         "evolves_to": [
             "Reverse Weddinmon"
         ]
-    },
-    {
-        "name": "Shoujishou",
-        "english_name": "Shoujishou",
-        "image_url": "https://wikimon.net/images/9/9a/Mobilemon.png",
-        "level": "Child",
-        "attribute": null,
-        "type": "Beast Man",
-        "group": null,
-        "fields": [],
-        "evolves_from": [],
-        "evolves_to": []
     },
     {
         "name": "Shoutmon",
@@ -48474,48 +48424,6 @@
             "Whamon Perfect",
             "Wingdramon"
         ]
-    },
-    {
-        "name": "Unnamed Trailmon 1 (Next)",
-        "english_name": "Unnamed Trailmon 1 (Next)",
-        "image_url": "https://wikimon.net/images/2/2b/Unnamed_trailmon_1_next.jpg",
-        "level": "Adult",
-        "attribute": "Data",
-        "type": "Machine",
-        "group": null,
-        "fields": [
-            "Metal Empire"
-        ],
-        "evolves_from": [],
-        "evolves_to": []
-    },
-    {
-        "name": "Unnamed Trailmon 2 (Next)",
-        "english_name": "Unnamed Trailmon 2 (Next)",
-        "image_url": "https://wikimon.net/images/d/d2/Unnamed_trailmon_2_next.jpg",
-        "level": "Adult",
-        "attribute": "Data",
-        "type": "Machine",
-        "group": null,
-        "fields": [
-            "Metal Empire"
-        ],
-        "evolves_from": [],
-        "evolves_to": []
-    },
-    {
-        "name": "Unnamed Trailmon 3 (Next)",
-        "english_name": "Unnamed Trailmon 3 (Next)",
-        "image_url": "https://wikimon.net/images/f/fe/Unnamed_trailmon_3_next.jpg",
-        "level": "Adult",
-        "attribute": "Data",
-        "type": "Machine",
-        "group": null,
-        "fields": [
-            "Metal Empire"
-        ],
-        "evolves_from": [],
-        "evolves_to": []
     },
     {
         "name": "Upamon",

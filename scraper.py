@@ -28,8 +28,24 @@ def get_all_digimon_names():
     response = requests.get(url, params=params)
     wikitext = list(response.json().get("query", {}).get("pages", {}).values())[0].get("revisions", [{}])[0].get("*", "")
     
-    raw_names = re.findall(r'\|n=([^|\n]+)', wikitext)
-    clean_names = {name.strip().split("{{!}}")[0] for name in raw_names}
+    clean_names = set()
+    # Find all data blocks for individual Digimon
+    blocks = re.findall(r'\{\{DlistJ\s*(.*?)\}\}', wikitext, re.DOTALL)
+    
+    for block in blocks:
+        name_match = re.search(r'\|n=([^|\n]+)', block)
+        debut_match = re.search(r'\|d=([^\n]+)', block)
+        
+        if name_match:
+            name = name_match.group(1).strip().split("{{!}}")[0]
+            debut_text = debut_match.group(1) if debut_match else ""
+            
+            # FILTRATION: Drop manga-specific vehicles, unreleased data, and obscure Chinese game exclusives
+            if "Unnamed" in name or "Unreleased" in debut_text or "Legendary Skies" in debut_text:
+                continue
+                
+            clean_names.add(name)
+            
     return sorted(list(clean_names))
 
 def generate_mediawiki_image_url(filename):
