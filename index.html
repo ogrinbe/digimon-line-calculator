@@ -29,8 +29,8 @@
 
         .controls-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 15px;
             background-color: #222;
             padding: 15px;
             border-radius: 5px;
@@ -38,7 +38,7 @@
 
         .control-section {
             border-right: 1px solid #444;
-            padding-right: 20px;
+            padding-right: 15px;
         }
 
             .control-section:last-child {
@@ -49,15 +49,17 @@
             margin-top: 0;
             color: #4287f5;
             font-size: 16px;
+            margin-bottom: 10px;
         }
 
-        select, button {
-            padding: 5px;
-            margin-top: 5px;
+        select, input[type="text"], button {
+            padding: 6px;
+            margin-bottom: 8px;
             width: 100%;
             background: #444;
             color: white;
             border: 1px solid #666;
+            box-sizing: border-box;
         }
 
         button {
@@ -65,6 +67,7 @@
             background: #4287f5;
             border: none;
             font-weight: bold;
+            border-radius: 4px;
         }
 
             button:hover {
@@ -73,8 +76,9 @@
 
         label {
             display: block;
-            font-size: 14px;
-            margin-bottom: 5px;
+            font-size: 13px;
+            margin-bottom: 6px;
+            cursor: pointer;
         }
 
         #mynetwork {
@@ -92,25 +96,32 @@
 
         <div class="controls-grid">
             <div class="control-section">
-                <h3>1. Route Finder (Coming Soon)</h3>
-                <select id="start-mon"><option>Select Start Digimon...</option></select>
-                <select id="end-mon"><option>Select Target Digimon...</option></select>
-                <label><input type="checkbox" id="allow-dedigivolve"> Allow De-digivolution</label>
-                <button onclick="alert('Routing logic coming next!')">Find Paths</button>
+                <h3>1. Search Digimon</h3>
+                <input type="text" id="searchBox" placeholder="e.g. Agumon">
+                <button onclick="searchAndFocus()">Locate & Highlight</button>
+                <button onclick="resetGraph()" style="background: #666;">Reset View</button>
             </div>
 
             <div class="control-section">
-                <h3>2. Graph Filters (Coming Soon)</h3>
+                <h3>2. Route Finder (BFS)</h3>
+                <select id="start-mon"><option value="">Select Start...</option></select>
+                <select id="end-mon"><option value="">Select Target...</option></select>
+                <label><input type="checkbox" id="allow-dedigivolve"> Allow De-digivolution</label>
+                <button onclick="findRoute()">Calculate Shortest Path</button>
+            </div>
+
+            <div class="control-section">
+                <h3>3. Graph Filters</h3>
                 <select id="filter-level"><option>Filter by Level (All)</option></select>
                 <select id="filter-attribute"><option>Filter by Attribute (All)</option></select>
                 <button onclick="alert('Filtering coming next!')">Apply Filters</button>
             </div>
 
             <div class="control-section">
-                <h3>3. Level Adjustments</h3>
-                <label><input type="checkbox" id="armor-champ" checked> Treat Armor as Champion (Lv.4)</label>
-                <label><input type="checkbox" id="hybrid-champ" checked> Treat Human Spirit as Champion</label>
-                <label><input type="checkbox" id="hybrid-ult" checked> Treat Beast Spirit as Ultimate</label>
+                <h3>4. Level Adjustments</h3>
+                <label><input type="checkbox" id="armor-champ" checked onchange="updateTCGRules()"> Armor = Champion (Lv.4)</label>
+                <label><input type="checkbox" id="hybrid-champ" checked onchange="updateTCGRules()"> Human Spirit = Champion</label>
+                <label><input type="checkbox" id="hybrid-ult" checked onchange="updateTCGRules()"> Beast Spirit = Ultimate (Lv.5)</label>
             </div>
         </div>
     </div>
