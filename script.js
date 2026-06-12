@@ -5,7 +5,7 @@ const levelMap = {
 };
 
 let db = {};
-let network = null; // Store the graph instance
+let network = null;
 
 // 1. Fetch the JSON file
 fetch('digimon_db.json')
@@ -13,16 +13,15 @@ fetch('digimon_db.json')
     .then(data => {
         data.forEach(mon => { db[mon.name] = mon; });
 
-        // Calculate the math (this is lightning fast)
         let totalLines = calculateTotalPossibleLines(data);
         document.getElementById('total-stats').innerText =
             `Total Digimon: ${data.length} | Total Possible Lines: ${totalLines.toLocaleString()}`;
 
-        // Draw an empty graph to start
-        initGraph([], []);
+        // Render the massive graph immediately on load
+        drawFullGraph(data);
     });
 
-// 2. The Math (Unchanged - it was already fast)
+// 2. The Math
 function calculateTotalPossibleLines(digimonArray) {
     let memo = {};
     function countPaths(digimonName) {
@@ -56,11 +55,44 @@ function calculateTotalPossibleLines(digimonArray) {
     return totalGlobalLines;
 }
 
-// 3. Search and Focus Logic
+// 3. Render the Massive Grid (Performantly)
+function drawFullGraph(data) {
+    document.getElementById('total-stats').innerText = "Calculating graph layout... Please wait.";
+
+    let nodesArray = [];
+    let edgesArray = [];
+
+    // Build all nodes
+    data.forEach(mon => {
+        nodesArray.push({
+            id: mon.name,
+            label: mon.english_name || mon.name,
+            shape: 'circularImage',
+            image: mon.image_url || 'https://via.placeholder.com/50',
+            size: 25,
+            font: { color: '#ffffff', size: 10 }
+        });
+
+        // Build all edges
+        mon.evolves_to.forEach(nextMon => {
+            if (db[nextMon]) {
+                edgesArray.push({
+                    from: mon.name,
+                    to: nextMon,
+                    arrows: 'to',
+                    color: '#555555'
+                });
+            }
+        });
+    });
+
+    initGraph(nodesArray, edgesArray, true);
+}
+
+// 4. Search function logic
 function searchDigimon() {
     let query = document.getElementById('searchBox').value.trim();
 
-    // Capitalize first letter to match database (e.g. "agumon" -> "Agumon")
     if (query.length > 0) {
         query = query.charAt(0).toUpperCase() + query.slice(1);
     }
@@ -70,72 +102,52 @@ function searchDigimon() {
         return;
     }
 
-    let nodesToDraw = new Map();
-    let edgesToDraw = [];
-
-    // Helper function to create a node safely
-    function addNode(monName) {
-        if (!nodesToDraw.has(monName) && db[monName]) {
-            let mon = db[monName];
-            nodesToDraw.set(monName, {
-                id: mon.name,
-                label: mon.english_name || mon.name,
-                shape: 'circularImage',
-                image: mon.image_url || 'https://via.placeholder.com/50',
-                size: 30,
-                font: { color: '#ffffff' },
-                level: levelMap[mon.level] || 0 // Used for sorting the tree
-            });
-        }
+    // Instead of redrawing the graph, we can focus the camera on the searched Digimon
+    if (network) {
+        network.focus(query, {
+            scale: 1.5,
+            animation: { duration: 1000, easingFunction: "easeInOutQuad" }
+        });
+        network.selectNodes([query]);
     }
-
-    // Add the searched Digimon
-    addNode(query);
-
-    // Add what it evolves FROM
-    db[query].evolves_from.forEach(prevMon => {
-        if (db[prevMon]) {
-            addNode(prevMon);
-            edgesToDraw.push({ from: prevMon, to: query, arrows: 'to', color: '#ffcc00' });
-        }
-    });
-
-    // Add what it evolves TO
-    db[query].evolves_to.forEach(nextMon => {
-        if (db[nextMon]) {
-            addNode(nextMon);
-            edgesToDraw.push({ from: query, to: nextMon, arrows: 'to', color: '#ffcc00' });
-        }
-    });
-
-    // Update the graph
-    initGraph(Array.from(nodesToDraw.values()), edgesToDraw);
 }
 
-// 4. The FAST Graph Renderer
-function initGraph(nodesArray, edgesArray) {
+// 5. The Graph Renderer with Pre-Stabilization
+function initGraph(nodesArray, edgesArray, isFullGraph = false) {
     const container = document.getElementById('mynetwork');
     const graphData = { nodes: nodesArray, edges: edgesArray };
 
     const options = {
-        // TURN OFF PHYSICS: This stops the CPU from melting
-        physics: { enabled: false },
-
-        // HIERARCHICAL LAYOUT: Forces it into a neat Left-to-Right tree
         layout: {
-            hierarchical: {
-                direction: "LR", // Left to Right
-                sortMethod: "directed",
-                nodeSpacing: 150,
-                levelSeparation: 250
+            improvedLayout: false // CRITICAL: Speeds up calculation for networks > 100 nodes
+        },
+        physics: {
+            enabled: true,
+            stabilization: {
+                enabled: true,
+                iterations: 150, // Calculates 150 layout steps invisibly before showing anything
+                updateInterval: 50
+            },
+            barnesHut: {
+                gravitationalConstant: -800, // Pushes nodes apart
+                centralGravity: 0.3,
+                springLength: 100
             }
         },
-        nodes: { borderWidth: 2, color: { border: '#444', background: '#ffffff' } },
-        edges: { smooth: { type: 'cubicBezier', forceDirection: 'horizontal' } }
+        nodes: { borderWidth: 1, color: { border: '#444', background: '#ffffff' } },
+        edges: { smooth: { type: 'continuous' } } // Continuous is much faster to render than cubicBezier
     };
 
     if (network !== null) {
-        network.destroy(); // Clear old graph
+        network.destroy();
     }
+
     network = new vis.Network(container, graphData, options);
+
+    // Turn off physics once the initial layout is complete so the CPU rests
+    network.once("stabilizationIterationsDone", function () {
+        network.setOptions({ physics: { enabled: false } });
+        document.getElementById('total-stats').innerText =
+            `Total Digimon: ${nodesArray.length} | Graph Loaded!`;
+    });
 }
