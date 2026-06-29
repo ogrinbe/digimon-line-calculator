@@ -435,3 +435,26 @@ function injectVirtualEdges(customEdges) {
     });
     if (newEdges.length > 0) edgesDataset.add(newEdges);
 }
+
+// 1.5 Populate Dropdowns
+function populateDropdowns(data) {
+    let startSelect = document.getElementById('start-mon');
+    let endSelect = document.getElementById('end-mon');
+
+    // Sort the Digimon alphabetically so they are easier to find in the list
+    let sortedData = [...data].sort((a, b) => a.name.localeCompare(b.name));
+
+    sortedData.forEach(mon => {
+        // Create an option for the Start dropdown
+        let option1 = document.createElement('option');
+        option1.value = mon.name;
+        option1.text = mon.english_name || mon.name;
+        startSelect.add(option1);
+
+        // Create an option for the Target dropdown
+        let option2 = document.createElement('option');
+        option2.value = mon.name;
+        option2.text = mon.english_name || mon.name;
+        endSelect.add(option2);
+    });
+}
