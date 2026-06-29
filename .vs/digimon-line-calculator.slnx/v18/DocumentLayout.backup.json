@@ -25,7 +25,7 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 200,
+          "DockedWidth": 233,
           "SelectedChildIndex": 3,
           "Children": [
             {
@@ -38,8 +38,7 @@
               "RelativeToolTip": "cleanup.py",
               "ViewState": "AgIAABEAAAAAAAAAAAAswBoAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2026-06-29T09:49:08.92Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-29T09:49:08.92Z"
             },
             {
               "$type": "Document",
@@ -51,8 +50,7 @@
               "RelativeToolTip": "scraper.py",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2026-06-12T10:44:10.588Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-12T10:44:10.588Z"
             },
             {
               "$type": "Document",
@@ -64,8 +62,7 @@
               "RelativeToolTip": "index.html",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAHYAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2026-06-12T10:43:50.755Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-12T10:43:50.755Z"
             },
             {
               "$type": "Document",
@@ -75,7 +72,7 @@
               "RelativeDocumentMoniker": "script.js",
               "ToolTip": "C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\script.js",
               "RelativeToolTip": "script.js",
-              "ViewState": "AgIAAKYBAAAAAAAAAAAmwKoBAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAK4BAAAAAAAAAAAiwMcBAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2026-06-12T10:44:39.75Z",
               "EditorCaption": ""
@@ -83,7 +80,7 @@
           ]
         },
         {
-          "DockedWidth": 110,
+          "DockedWidth": 77,
           "SelectedChildIndex": -1,
           "Children": [
             {
@@ -93,6 +90,14 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
             }
           ]
         }
