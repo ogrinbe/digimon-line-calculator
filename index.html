@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Digimon Line Calculator</title>
+    <title>Digimon Evolutionary Architect</title>
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <style>
         body {
@@ -17,19 +17,44 @@
             padding: 15px;
             background-color: #333;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
         #total-stats {
             margin: 0 0 15px 0;
             color: #ffcc00;
             text-align: center;
-            font-size: 24px;
+            font-size: 22px;
         }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            background: #222;
+            border: 1px solid #444;
+            color: #aaa;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+            .tab-btn.active {
+                background: #4287f5;
+                color: white;
+                border-color: #4287f5;
+            }
 
         .controls-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1.5fr 1fr 1fr;
             gap: 15px;
             background-color: #222;
             padding: 15px;
@@ -39,6 +64,8 @@
         .control-section {
             border-right: 1px solid #444;
             padding-right: 15px;
+            display: flex;
+            flex-direction: column;
         }
 
             .control-section:last-child {
@@ -48,17 +75,18 @@
         h3 {
             margin-top: 0;
             color: #4287f5;
-            font-size: 16px;
+            font-size: 15px;
             margin-bottom: 10px;
         }
 
         select, input[type="text"], button {
-            padding: 6px;
+            padding: 8px;
             margin-bottom: 8px;
             width: 100%;
             background: #444;
             color: white;
             border: 1px solid #666;
+            border-radius: 4px;
             box-sizing: border-box;
         }
 
@@ -67,7 +95,7 @@
             background: #4287f5;
             border: none;
             font-weight: bold;
-            border-radius: 4px;
+            transition: background 0.2s;
         }
 
             button:hover {
@@ -81,58 +109,285 @@
             cursor: pointer;
         }
 
+        .waypoint-container {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .remove-btn {
+            background: #ff4444;
+            width: 35px;
+            flex-shrink: 0;
+        }
+
+            .remove-btn:hover {
+                background: #cc0000;
+            }
+
+        /* App Views */
+        #network-view {
+            display: flex;
+            gap: 15px;
+            height: 70vh;
+        }
+
         #mynetwork {
-            width: 100%;
-            height: 75vh;
+            flex: 3;
             border: 1px solid #444;
             background-color: #111;
             border-radius: 8px;
         }
+
+        /* Sidebar */
+        #info-sidebar {
+            flex: 1;
+            background: #222;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            display: none;
+            overflow-y: auto;
+        }
+
+        .trait-tag {
+            display: inline-block;
+            background: #4287f5;
+            color: white;
+            padding: 3px 8px;
+            font-size: 11px;
+            border-radius: 12px;
+            margin: 2px;
+            font-weight: bold;
+        }
+
+        /* Line Maker View */
+        #line-maker-view {
+            display: none;
+            height: 70vh;
+            background: #111;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .lm-grid {
+            display: flex;
+            gap: 15px;
+            height: 100%;
+            min-width: max-content;
+        }
+
+        .lm-col {
+            width: 180px;
+            background: #222;
+            border-radius: 6px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            border: 1px solid #333;
+        }
+
+            .lm-col h4 {
+                margin: 0 0 10px 0;
+                text-align: center;
+                color: #ffcc00;
+                border-bottom: 1px solid #444;
+                padding-bottom: 5px;
+            }
+
+        .lm-slot {
+            background: #333;
+            border: 1px dashed #666;
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+
+            .lm-slot:hover {
+                border-color: #4287f5;
+                background: #3a3a3a;
+            }
+
+            .lm-slot img {
+                max-width: 60px;
+                border-radius: 50%;
+                margin-bottom: 5px;
+            }
+
+            .lm-slot.empty {
+                opacity: 0.6;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 80px;
+                font-weight: bold;
+                color: #888;
+            }
+
+        /* Modal */
+        #suggestion-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #222;
+            width: 600px;
+            max-height: 80vh;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #444;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .suggestion-card {
+            background: #333;
+            padding: 10px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            border: 1px solid #444;
+        }
+
+            .suggestion-card:hover {
+                border-color: #4287f5;
+            }
+
+            .suggestion-card img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+            }
+
+        .sug-canon {
+            color: #42f566;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .sug-karnex {
+            color: #a142f5;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .close-modal {
+            background: #ff4444;
+            width: auto;
+            padding: 8px 15px;
+            float: right;
+            margin-bottom: 0;
+        }
     </style>
 </head>
 <body>
+
     <div id="ui-panel">
         <h2 id="total-stats">Loading Database...</h2>
 
-        <div class="controls-grid">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchView('network')">🌐 Graph View & Router</button>
+            <button class="tab-btn" onclick="switchView('linemaker')">🛠️ Line Architect (Grid Mode)</button>
+        </div>
+
+        <div id="controls-network" class="controls-grid">
             <div class="control-section">
                 <h3>1. Search Digimon</h3>
                 <input type="text" id="searchBox" placeholder="e.g. Agumon">
-                <button onclick="searchAndFocus()">Locate & Highlight</button>
+                <button onclick="searchAndFocus()">Locate & Focus Tree</button>
                 <button onclick="resetGraph()" style="background: #666;">Reset View</button>
+                <label style="margin-top:10px;"><input type="checkbox" id="focus-mode-toggle" checked> Auto-Hide Unrelated Nodes</label>
             </div>
 
             <div class="control-section">
-                <h3>2. Route Finder (BFS & Smart)</h3>
-                <select id="start-mon"><option value="">Select Start...</option></select>
-                <select id="end-mon"><option value="">Select Target...</option></select>
-                <label><input type="checkbox" id="allow-dedigivolve"> Allow De-digivolution</label>
-
-                <div style="display: flex; gap: 5px;">
-                    <button onclick="findRoute(false)">Canonical BFS</button>
-                    <button onclick="findRoute(true)" style="background: #a142f5;">KarnEX Engine</button>
+                <h3>2. Multi-Stop Route Finder</h3>
+                <div id="waypoint-list">
+                    <div class="waypoint-container"><select class="route-node"></select></div>
+                    <div class="waypoint-container"><select class="route-node"></select></div>
                 </div>
+                <button onclick="addWaypoint()" style="background: #555; margin-top: 5px;">+ Add Stop</button>
+                <label style="margin-top: 5px;"><input type="checkbox" id="allow-dedigivolve"> Allow De-digivolution</label>
 
-                <div id="route-readout" style="margin-top: 10px; font-size: 13px; color: #ffcc00; max-height: 120px; overflow-y: auto;"></div>
+                <div style="display: flex; gap: 5px; margin-top: auto;">
+                    <button onclick="findMultiRoute(false)">Canonical BFS</button>
+                    <button onclick="findMultiRoute(true)" style="background: #a142f5;">KarnEX Engine</button>
+                </div>
             </div>
 
             <div class="control-section">
                 <h3>3. Graph Filters</h3>
-                <select id="filter-level"><option>Filter by Level (All)</option></select>
-                <select id="filter-attribute"><option>Filter by Attribute (All)</option></select>
-                <button onclick="alert('Filtering coming next!')">Apply Filters</button>
+                <select id="filter-level"><option value="All">Filter by Level (All)</option></select>
+                <select id="filter-attribute"><option value="All">Filter by Attribute (All)</option></select>
+                <button onclick="applyFilters()">Apply Filters</button>
+                <div id="route-readout" style="margin-top: 10px; font-size: 12px; color: #ffcc00; max-height: 80px; overflow-y: auto;"></div>
             </div>
 
             <div class="control-section">
-                <h3>4. Level Adjustments</h3>
+                <h3>4. Global Settings</h3>
                 <label><input type="checkbox" id="armor-champ" checked onchange="updateTCGRules()"> Armor = Champion (Lv.4)</label>
                 <label><input type="checkbox" id="hybrid-champ" checked onchange="updateTCGRules()"> Human Spirit = Champion</label>
                 <label><input type="checkbox" id="hybrid-ult" checked onchange="updateTCGRules()"> Beast Spirit = Ultimate (Lv.5)</label>
+                <button onclick="exportGraphToPNG()" style="background: #28a745; margin-top: auto;">📸 Export Graph PNG</button>
             </div>
         </div>
     </div>
 
-    <div id="mynetwork"></div>
+    <div id="network-view">
+        <div id="mynetwork"></div>
+        <div id="info-sidebar">
+            <h2 id="side-name" style="margin-top:0; color: #ffcc00;">-</h2>
+            <p><strong>Level:</strong> <span id="side-level">-</span></p>
+            <p><strong>Attribute:</strong> <span id="side-attr">-</span></p>
+            <p><strong>Type:</strong> <span id="side-type">-</span></p>
+            <div id="side-traits" style="margin: 10px 0;"></div>
+            <hr style="border-color: #444;">
+            <p id="side-profile" style="font-size: 13px; line-height: 1.4; color: #bbb;"></p>
+        </div>
+    </div>
+
+    <div id="line-maker-view">
+        <div class="lm-grid" id="lm-container">
+        </div>
+    </div>
+
+    <div id="suggestion-modal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content: space-between; align-items:center;">
+                <h2 style="margin:0; color:#4287f5;">Select Evolution</h2>
+                <button class="close-modal" onclick="document.getElementById('suggestion-modal').style.display='none'">X</button>
+            </div>
+            <input type="text" id="modal-search" placeholder="Search by name..." onkeyup="filterModalSearch()" style="margin-top: 15px;">
+            <div class="modal-list" id="modal-suggestions"></div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

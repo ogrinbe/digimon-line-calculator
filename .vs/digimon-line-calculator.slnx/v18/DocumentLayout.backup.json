@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\scraper.py||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:scraper.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\script.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:script.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\script.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:script.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\digimon_db.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:digimon_db.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\scraper.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:scraper.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\blacklist.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:blacklist.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\cleanup.py||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -26,30 +34,56 @@
       "DocumentGroups": [
         {
           "DockedWidth": 233,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
+              "Title": "digimon_db.json",
+              "DocumentMoniker": "C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\digimon_db.json",
+              "RelativeDocumentMoniker": "digimon_db.json",
+              "ToolTip": "C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\digimon_db.json",
+              "RelativeToolTip": "digimon_db.json",
+              "ViewState": "AgIAAA1wAAAAAAAAAAAAABlwAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-06-29T14:51:40.883Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "cleanup.py",
               "DocumentMoniker": "C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\cleanup.py",
               "RelativeDocumentMoniker": "cleanup.py",
               "ToolTip": "C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\cleanup.py",
               "RelativeToolTip": "cleanup.py",
-              "ViewState": "AgIAABEAAAAAAAAAAAAswBoAAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAswA8AAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
               "WhenOpened": "2026-06-29T09:49:08.92Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
+              "Title": "blacklist.json",
+              "DocumentMoniker": "C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\blacklist.json",
+              "RelativeDocumentMoniker": "blacklist.json",
+              "ToolTip": "C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\blacklist.json",
+              "RelativeToolTip": "blacklist.json",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-06-29T11:50:31.876Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "scraper.py",
               "DocumentMoniker": "C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\scraper.py",
               "RelativeDocumentMoniker": "scraper.py",
               "ToolTip": "C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\scraper.py",
               "RelativeToolTip": "scraper.py",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAJ4BAAAAAAAAAAAiwK8BAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
               "WhenOpened": "2026-06-12T10:44:10.588Z",
               "EditorCaption": ""
@@ -62,20 +96,20 @@
               "RelativeDocumentMoniker": "index.html",
               "ToolTip": "C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\index.html",
               "RelativeToolTip": "index.html",
-              "ViewState": "AgIAABIAAAAAAAAAAAAAAHYAAAApAAAAAAAAAA==",
+              "ViewState": "AgIAAGUBAAAAAAAAAAAIwIgBAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2026-06-12T10:43:50.755Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "script.js",
               "DocumentMoniker": "C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\script.js",
               "RelativeDocumentMoniker": "script.js",
               "ToolTip": "C:\\Users\\ogrin\\Desktop\\digimon-line-calculator\\script.js",
               "RelativeToolTip": "script.js",
-              "ViewState": "AgIAALUBAAAAAAAAAAAuwMMBAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADICAAAAAAAAAAAiwDsCAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2026-06-12T10:44:39.75Z",
               "EditorCaption": ""
